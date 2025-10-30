@@ -35,3 +35,6 @@ variable "db_password"{
 variable "db_name"{
     type = string
 }
+variable "server_cert_arn"{
+    type = string
+}
