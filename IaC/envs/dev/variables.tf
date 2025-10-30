@@ -8,3 +8,17 @@ variable "vpc_cidr" {
 variable "project_name" {
     type = string
 }
+variable "az_count" {
+    type = number
+}
+variable "public_subnet_cidrs"{
+    type = list(string)
+}
+//private subnets for the app
+variable "app_subnet_cidrs" {
+    type = list(string)
+}
+//private subnet for the db
+variable "data_subnet_cidrs" {
+    type = list(string)
+}
