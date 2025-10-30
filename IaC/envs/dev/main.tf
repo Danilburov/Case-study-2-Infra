@@ -160,3 +160,33 @@ resource "aws_route53_zone" "internal" {
   tags = { Name = "case-study-2-phz" }
 }
 
+#subnet group for RDS that uses the private db subnets
+resource "aws_db_subnet_group" "rds" {
+  name       = "case-study-2-rds-subnets"
+  subnet_ids = [for s in aws_subnet.data : s.id]
+  tags       = { Name = "case-study-2-rds-subnets" }
+}
+
+resource "aws_db_instance" "postgres" {
+  identifier                = "case-study-2-db"
+  engine                    = "postgres"
+  engine_version            = "16.3"
+  instance_class            = "db.t4g.micro"
+  username                  = var.db_username
+  password                  = var.db_password
+  db_name                   = var.db_name
+
+  allocated_storage         = 20
+  storage_encrypted         = true
+  backup_retention_period   = 7
+
+  db_subnet_group_name      = aws_db_subnet_group.rds.name
+  vpc_security_group_ids    = [aws_security_group.rds.id]
+
+  publicly_accessible       = false
+  multi_az                  = true
+  deletion_protection       = false
+  skip_final_snapshot       = true
+
+  tags = { Name = "case-study-2-postgres" }
+}

@@ -26,3 +26,12 @@ variable "data_subnet_cidrs" {
 variable "internal_domain" {
     type = string
 }
+variable "db_username"{
+    type = string
+}
+variable "db_password"{
+    type = string
+}
+variable "db_name"{
+    type = string
+}
