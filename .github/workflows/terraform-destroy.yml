@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: iac/envs/dev
+        working-directory: IaC/envs/dev
 
     steps:
       - name: Checkout code
