@@ -22,3 +22,7 @@ variable "app_subnet_cidrs" {
 variable "data_subnet_cidrs" {
     type = list(string)
 }
+//
+variable "internal_domain" {
+    type = string
+}
