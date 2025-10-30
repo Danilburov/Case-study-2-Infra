@@ -233,4 +233,5 @@ resource "aws_route53_record" "db_record" {
   type    = "CNAME"
   ttl     = 300
   records = [aws_db_instance.postgres.address]
+  depends_on = [aws_db_instance.postgres]
 }
