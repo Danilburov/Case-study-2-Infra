@@ -34,6 +34,9 @@ jobs:
 
       - name: Show backend.hcl contents
         run: cat backend.hcl
+        
+      - name: Verify state lists resources
+        run: terraform state list || echo "No state found"
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -var-file=terraform.tfvars
