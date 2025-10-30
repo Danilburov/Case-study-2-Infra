@@ -1,9 +1,10 @@
 variable "aws_region" {
-  description = "AWS region"
-  type        = string
+    type = string
 }
 
 variable "vpc_cidr" {
-  description = "CIDR block for the VPC"
-  type        = string
+    type = string
+}
+variable "project_name" {
+    type = string
 }
