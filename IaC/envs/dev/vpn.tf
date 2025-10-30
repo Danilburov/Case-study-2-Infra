@@ -1,9 +1,9 @@
-resource "aws_ec2_client_vpn_endpoint" "team_vpn" {
+resource "aws_ec2_client_vpn_endpoint" "case-study-2-vpn" {
   description            = "case-study-2-client-vpn"
   server_certificate_arn = var.server_cert_arn
   client_cidr_block      = "10.100.0.0/22"
   split_tunnel           = true
-  dns_servers            = ["8.8.8.8"]
+  dns_servers            = ["10.0.0.2"]
   transport_protocol     = "udp"
 
   authentication_options {
