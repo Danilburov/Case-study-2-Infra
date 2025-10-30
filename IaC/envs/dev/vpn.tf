@@ -43,3 +43,13 @@ resource "aws_ec2_client_vpn_route" "to_private" {
   target_vpc_subnet_id   = aws_ec2_client_vpn_network_association.vpn_assoc.subnet_id
   depends_on             = [aws_ec2_client_vpn_network_association.vpn_assoc]
 }
+#allow PostgreSQL from VPN clients
+resource "aws_security_group_rule" "vpn_to_rds" {
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  cidr_blocks       = ["10.100.0.0/22"]
+  security_group_id = aws_security_group.rds.id
+  description       = "Allow Postgres from VPN clients"
+}
