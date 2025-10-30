@@ -1,5 +1,5 @@
 bucket         = "case-study-2-tf-state"
-key            = "case-study-2/dev/terraform.tfstate"
+key            = "Case-study-2-Infra/envs/dev/terraform.tfstate"
 region         = "eu-central-1"
 dynamodb_table = "case-study-2-tf-locks"
-encrypt        = true√
+encrypt        = true
