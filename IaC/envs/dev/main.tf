@@ -227,3 +227,10 @@ resource "aws_ecs_cluster" "main" {
     }
   
 }
+resource "aws_route53_record" "db_record" {
+  zone_id = aws_route53_zone.internal.zone_id
+  name    = "db.${var.internal_domain}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_db_instance.postgres.address]
+}
