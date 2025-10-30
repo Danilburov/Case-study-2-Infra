@@ -8,4 +8,4 @@ data_subnet_cidrs = ["10.0.21.0/24", "10.0.22.0/24"]
 internal_domain = "internal.local"
 db_username = "appuser"
 db_password = "1@SqkEMI1Mex6F"
-db_name = "case-study-2-db"
+db_name = "soardb"
