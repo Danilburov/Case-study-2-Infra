@@ -15,7 +15,9 @@ data "aws_availability_zones" "available" {
 # Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-  tags   = { Name = "case-study-2-igw" }
+  tags = {
+    Name = "case-study-2-igw"
+    }
 }
 
 #public subnets
@@ -62,7 +64,9 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
-  tags = { Name = "case-study-2-public-rt" }
+  tags = {
+    Name = "case-study-2-public-rt"
+    }
 }
 
 resource "aws_route_table_association" "public_assoc" {
@@ -74,7 +78,9 @@ resource "aws_route_table_association" "public_assoc" {
 #single NAT in AZ 0 to save cost
 resource "aws_eip" "nat" {
   domain = "vpc"
-  tags   = { Name = "case-study-2-nat-eip" }
+  tags = {
+    Name = "case-study-2-nat-eip"
+  }
 }
 
 //NAT that depends on the igw
@@ -92,7 +98,9 @@ resource "aws_route_table" "app" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat.id
   }
-  tags = { Name = "case-study-2-app-rt" }
+  tags = {
+    Name = "case-study-2-app-rt"
+    }
 }
 
 resource "aws_route_table_association" "app_assoc" {
@@ -104,7 +112,9 @@ resource "aws_route_table_association" "app_assoc" {
 #private DATA route table
 resource "aws_route_table" "data" {
   vpc_id = aws_vpc.main.id
-  tags   = { Name = "case-study-2-data-rt" }
+  tags = {
+    Name = "case-study-2-data-rt"
+    }
 }
 
 resource "aws_route_table_association" "data_assoc" {
@@ -126,7 +136,9 @@ resource "aws_security_group" "ecs_tasks" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "case-study-2-ecs-tasks-sg" }
+  tags = {
+    Name = "case-study-2-ecs-tasks-sg"
+  }
 }
 
 #security group for RDS
@@ -149,7 +161,9 @@ resource "aws_security_group" "rds" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "case-study-2-rds-sg" }
+  tags = {
+    Name = "case-study-2-rds-sg"
+    }
 }
 //private zone
 resource "aws_route53_zone" "internal" {
@@ -157,20 +171,24 @@ resource "aws_route53_zone" "internal" {
   vpc {
     vpc_id = aws_vpc.main.id
   }
-  tags = { Name = "case-study-2-phz" }
+  tags = {
+    Name = "case-study-2-phz"
+    }
 }
 
 #subnet group for RDS that uses the private db subnets
 resource "aws_db_subnet_group" "rds" {
   name       = "case-study-2-rds-subnets"
   subnet_ids = [for s in aws_subnet.data : s.id]
-  tags       = { Name = "case-study-2-rds-subnets" }
+  tags = {
+    Name = "case-study-2-rds-subnets"
+    }
 }
 
 resource "aws_db_instance" "postgres" {
   identifier                = "case-study-2-db"
   engine                    = "postgres"
-  engine_version            = "16.3"
+  engine_version            = "17.6"
   instance_class            = "db.t4g.micro"
   username                  = var.db_username
   password                  = var.db_password
@@ -188,5 +206,24 @@ resource "aws_db_instance" "postgres" {
   deletion_protection       = false
   skip_final_snapshot       = true
 
-  tags = { Name = "case-study-2-postgres" }
+  tags = {
+    Name = "case-study-2-postgres"
+  }
+}
+resource "aws_ecr_repository" "collector"{
+    name = "case-study-2-collector"
+    image_tag_mutability = "MUTABLE"
+    image_scanning_configuration {
+      scan_on_push = true
+    }
+    tags = {
+        Name = "case-study-2-collector-ecr"
+    }
+}
+resource "aws_ecs_cluster" "main" {
+    name = "case-study-2-ecs"
+    tags = {
+        Name = "case-study-2-ecs"
+    }
+  
 }
