@@ -113,3 +113,42 @@ resource "aws_route_table_association" "data_assoc" {
   route_table_id = aws_route_table.data.id
 }
 
+#security group for ECS tasks - app
+resource "aws_security_group" "ecs_tasks" {
+  name        = "case-study-2-ecs-tasks-sg"
+  description = "Allow egress for ECS tasks"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "case-study-2-ecs-tasks-sg" }
+}
+
+#security group for RDS
+resource "aws_security_group" "rds" {
+  name        = "case-study-2-rds-sg"
+  description = "Allow Postgres from ECS tasks"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_tasks.id]
+    description     = "Postgres from ECS tasks"
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "case-study-2-rds-sg" }
+}
+
