@@ -30,13 +30,17 @@ jobs:
           terraform_version: 1.7.5
 
       - name: Terraform Init
-        run: terraform init -backend-config=backend.hcl
+        run: terraform init
 
-      - name: Show backend.hcl contents
-        run: cat backend.hcl
+      - name: Show Destroy plan
+        run: terraform plan -destroy
+        continue-on-error: true
+
+      #- name: Show backend.hcl contents
+       # run: cat backend.hcl
         
-      - name: Verify state lists resources
-        run: terraform state list || echo "No state found"
+      #- name: Verify state lists resources
+       # run: terraform state list || echo "No state found"
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var-file=terraform.tfvars
+        run: terraform destroy -auto-approve
